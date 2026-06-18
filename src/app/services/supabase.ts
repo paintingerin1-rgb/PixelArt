@@ -10,15 +10,6 @@ export class SupabaseService {
 
   constructor() {
     this.client = createClient(environment.supabaseUrl, environment.supabaseKey);
-
-    //check if supabase successfully connected
-    this.client.auth.getSession().then(({ data, error }) => {
-      if (error) {
-        console.log('Supabase connection failed:', error.message);
-      } else {
-        console.log('Supabase connected successfully', data);
-      }
-    });
   }
 
   getClient(): SupabaseClient {
