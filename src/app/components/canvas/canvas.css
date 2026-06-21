@@ -1,0 +1,35 @@
+.canvas-container {
+  max-width: 500px;
+  margin: 60px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: system-ui, sans-serif;
+  text-align: center;
+}
+
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  background-color: #1a1a1a;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+button:hover {
+  background-color: #333;
+}
+
+.error {
+  color: #d33;
+  font-size: 13px;
+}
+
+.user-email {
+  color: #1a7a4c;
+  font-size: 14px;
+}
