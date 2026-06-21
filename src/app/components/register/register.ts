@@ -4,12 +4,12 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-register',
   imports: [FormsModule],
-  templateUrl: './login.html',
-  styleUrl: './login.css',
+  templateUrl: './register.html',
+  styleUrl: './register.css',
 })
-export class Login {
+export class Register {
   email: string = '';
   password: string = '';
   errorMessage: string = '';
@@ -24,7 +24,7 @@ export class Login {
     this.isLoading = true;
     this.errorMessage = '';
     try {
-      const { error } = await this.authService.signIn(this.email, this.password);
+      const { error } = await this.authService.signUp(this.email, this.password);
       if (error) {
         this.errorMessage = error.message;
       } else {
