@@ -1,5 +1,7 @@
-<h1>Register</h1>
-<input type="email" [(ngModel)]="email" placeholder="Email" />
-<input type="password" [(ngModel)]="password" placeholder="Password" />
-<button (click)="onSubmit()">Register</button>
-<p style="color: red">{{ errorMessage }}</p>
+<div class="register-container">
+  <h1>Register</h1>
+  <input type="email" [(ngModel)]="email" placeholder="Email" />
+  <input type="password" [(ngModel)]="password" placeholder="Password" />
+  <button (click)="onSubmit()">Register</button>
+  <p class="error">{{ errorMessage }}</p>
+</div>

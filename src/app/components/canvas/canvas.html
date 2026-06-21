@@ -1,4 +1,6 @@
-<p>canvas works!</p>
-<button (click)="logOut()">Log Out</button>
-<p style="color: red">{{ errorMessage }}</p>
-<p style="color: green">Email: {{ session?.user?.email }}</p>
+<div class="canvas-container">
+  <h1>Canvas</h1>
+  <p class="user-email">Logged in as: {{ session?.user?.email }}</p>
+  <button (click)="logOut()">Log Out</button>
+  <p class="error">{{ errorMessage }}</p>
+</div>

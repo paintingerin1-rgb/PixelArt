@@ -1,6 +1,8 @@
-<h1>Login</h1>
-<input type="email" [(ngModel)]="email" placeholder="Email" />
-<input type="password" [(ngModel)]="password" placeholder="Password" />
-<button (click)="onSubmit()">Login</button>
-<a routerLink="/register">Don't have an account? Register</a>
-<p style="color: red">{{ errorMessage }}</p>
+<div class="login-container">
+  <h1>Login</h1>
+  <input type="email" [(ngModel)]="email" placeholder="Email" />
+  <input type="password" [(ngModel)]="password" placeholder="Password" />
+  <button (click)="onSubmit()">Login</button>
+  <a routerLink="/register">Don't have an account? Register</a>
+  <p class="error">{{ errorMessage }}</p>
+</div>
