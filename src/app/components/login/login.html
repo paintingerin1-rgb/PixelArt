@@ -1,18 +1,12 @@
 <div class="login-container">
   <h1>Login</h1>
-  <input
-    type="email"
-    [value]="email()"
-    (input)="email.set($event.target.value)"
-    placeholder="Email"
-  />
-  <input
-    type="password"
-    [value]="password()"
-    (input)="password.set($event.target.value)"
-    placeholder="Password"
-  />
-  <button (click)="onSubmit()">Login</button>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <input type="email" formControlName="email" placeholder="Email" />
+    <input type="password" formControlName="password" placeholder="Password" />
+    <button type="submit">Login</button>
+  </form>
+
   <a routerLink="/register">Don't have an account? Register</a>
   <p class="error">{{ errorMessage() }}</p>
 </div>
