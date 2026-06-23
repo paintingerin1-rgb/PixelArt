@@ -1,5 +1,6 @@
 <div class="register-container">
   <h1>Register</h1>
+  <button type="button" routerLink="/login">Login Page</button>
 
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
     <input type="email" formControlName="email" placeholder="Email" />

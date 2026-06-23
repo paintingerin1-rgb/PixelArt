@@ -3,4 +3,6 @@
   <p class="user-email">Logged in as: {{ authService.session()?.user?.email }}</p>
   <button (click)="logOut()">Log Out</button>
   <p class="error">{{ errorMessage() }}</p>
+
+  <app-pixel-grid> </app-pixel-grid>
 </div>

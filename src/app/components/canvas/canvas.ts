@@ -1,10 +1,11 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { AuthService } from '../../services/auth';
 import { Router } from '@angular/router';
+import { PixelGrid } from '../pixel-grid/pixel-grid';
 
 @Component({
   selector: 'app-canvas',
-  imports: [],
+  imports: [PixelGrid],
   templateUrl: './canvas.html',
   styleUrl: './canvas.css',
 })
