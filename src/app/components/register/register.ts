@@ -1,19 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { AuthService } from '../../services/auth';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
-  imports: [FormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
 export class Register {
-  email: string = '';
-  password: string = '';
-  errorMessage: string = '';
-  isLoading: boolean = false;
+  errorMessage = signal('');
+  isLoading = signal(false);
+  registerForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required]),
+  });
 
   constructor(
     private authService: AuthService,
@@ -21,19 +23,27 @@ export class Register {
   ) {}
 
   async onSubmit() {
-    this.isLoading = true;
-    this.errorMessage = '';
+    if (this.registerForm.invalid) {
+      this.errorMessage.set('please fill in valid email and password');
+      return;
+    }
+
+    this.isLoading.set(true);
+    this.errorMessage.set('');
     try {
-      const { error } = await this.authService.signUp(this.email, this.password);
+      const { error } = await this.authService.signUp(
+        this.registerForm.value.email!,
+        this.registerForm.value.password!,
+      );
       if (error) {
-        this.errorMessage = error.message;
+        this.errorMessage.set(error.message);
       } else {
         this.router.navigate(['/canvas']);
       }
     } catch (error) {
-      this.errorMessage = 'An unexpected error occurred. Please try again.';
+      this.errorMessage.set('An unexpected error occurred. Please try again.');
     } finally {
-      this.isLoading = false;
+      this.isLoading.set(false);
     }
   }
 }

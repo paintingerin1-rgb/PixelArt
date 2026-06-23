@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
 import { Session } from '@supabase/supabase-js';
 import { SupabaseService } from './supabase';
 
@@ -7,18 +6,18 @@ import { SupabaseService } from './supabase';
   providedIn: 'root',
 })
 export class AuthService {
-  private sessionSubject = new BehaviorSubject<Session | null>(null);
-  public session$ = this.sessionSubject.asObservable();
+  private sessionSubject = signal<Session | null>(null);
+  public session = this.sessionSubject.asReadonly();
 
   constructor(private supabaseService: SupabaseService) {
     const client = this.supabaseService.getClient();
 
     client.auth.getSession().then(({ data }) => {
-      this.sessionSubject.next(data.session);
+      this.sessionSubject.set(data.session);
     });
 
     client.auth.onAuthStateChange((event, session) => {
-      this.sessionSubject.next(session);
+      this.sessionSubject.set(session);
     });
   }
 
@@ -38,6 +37,6 @@ export class AuthService {
   }
 
   get currentUser() {
-    return this.sessionSubject.value?.user ?? null;
+    return this.sessionSubject()?.user ?? null;
   }
 }

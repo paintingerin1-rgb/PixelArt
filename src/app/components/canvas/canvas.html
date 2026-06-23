@@ -1,6 +1,6 @@
 <div class="canvas-container">
   <h1>Canvas</h1>
-  <p class="user-email">Logged in as: {{ session?.user?.email }}</p>
+  <p class="user-email">Logged in as: {{ authService.session()?.user?.email }}</p>
   <button (click)="logOut()">Log Out</button>
-  <p class="error">{{ errorMessage }}</p>
+  <p class="error">{{ errorMessage() }}</p>
 </div>
