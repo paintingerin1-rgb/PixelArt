@@ -47,3 +47,12 @@ steps - run constructor - check if there is a session - if not create one - chec
 
 - Login failed, email didn't show after registering
 - "Confirm email" was on in Supabase — accounts weren't active until confirmed
+
+## Phase 3 - canvas
+
+converted obserables to - asReadonly()
+converted everything to allign with signals rather than behaviour subjects
+
+**Bug**
+
+- didn't save file, had to - cat to figure out that it was running wrong file.
