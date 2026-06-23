@@ -1,20 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { AuthService } from '../../services/auth';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, RouterLink],
+  imports: [RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
 export class Login {
-  email: string = '';
-  password: string = '';
-  errorMessage: string = '';
-  isLoading: boolean = false;
+  email = signal('');
+  password = signal('');
+  errorMessage = signal('');
+  isLoading = signal(false);
 
   constructor(
     private authService: AuthService,
@@ -22,19 +21,19 @@ export class Login {
   ) {}
 
   async onSubmit() {
-    this.isLoading = true;
-    this.errorMessage = '';
+    this.isLoading.set(true);
+    this.errorMessage.set('');
     try {
-      const { error } = await this.authService.signIn(this.email, this.password);
+      const { error } = await this.authService.signIn(this.email(), this.password());
       if (error) {
-        this.errorMessage = error.message;
+        this.errorMessage.set(error.message);
       } else {
         this.router.navigate(['/canvas']);
       }
     } catch (error) {
-      this.errorMessage = 'An unexpected error occurred. Please try again.';
+      this.errorMessage.set('An unexpected error occurred. Please try again.');
     } finally {
-      this.isLoading = false;
+      this.isLoading.set(false);
     }
   }
 }

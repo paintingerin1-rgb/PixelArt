@@ -1,19 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { AuthService } from '../../services/auth';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
-  imports: [FormsModule],
+  imports: [],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
 export class Register {
-  email: string = '';
-  password: string = '';
-  errorMessage: string = '';
-  isLoading: boolean = false;
+  email = signal('');
+  password = signal('');
+  errorMessage = signal('');
+  isLoading = signal(false);
 
   constructor(
     private authService: AuthService,
@@ -21,19 +20,19 @@ export class Register {
   ) {}
 
   async onSubmit() {
-    this.isLoading = true;
-    this.errorMessage = '';
+    this.isLoading.set(true);
+    this.errorMessage.set('');
     try {
-      const { error } = await this.authService.signUp(this.email, this.password);
+      const { error } = await this.authService.signUp(this.email(), this.password());
       if (error) {
-        this.errorMessage = error.message;
+        this.errorMessage.set(error.message);
       } else {
         this.router.navigate(['/canvas']);
       }
     } catch (error) {
-      this.errorMessage = 'An unexpected error occurred. Please try again.';
+      this.errorMessage.set('An unexpected error occurred. Please try again.');
     } finally {
-      this.isLoading = false;
+      this.isLoading.set(false);
     }
   }
 }
