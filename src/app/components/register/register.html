@@ -1,9 +1,17 @@
 <div class="register-container">
   <h1>Register</h1>
 
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-    <input type="email" formControlName="email" placeholder="Email" />
-    <input type="password" formControlName="password" placeholder="Password" />
+  <form (submit)="onSubmit($event)">
+    <input type="email" [formField]="registerForm.email" placeholder="Email" />
+    @if (registerForm.email().touched() && registerForm.email().invalid()) {
+      <p class="error">{{ registerForm.email().errors()[0].message }}</p>
+    }
+
+    <input type="password" [formField]="registerForm.password" placeholder="Password" />
+    @if (registerForm.password().touched() && registerForm.password().invalid()) {
+      <p class="error">{{ registerForm.password().errors()[0].message }}</p>
+    }
+
     <button type="submit">Register</button>
   </form>
 
