@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { signal } from '@angular/core';
 
 @Component({
   selector: 'app-pixel-grid',
@@ -11,6 +12,17 @@ import { FormsModule } from '@angular/forms';
 export class PixelGrid {
   gridSize: number = 16;
   grid: string[][] = [];
+  palette: string[] = [
+    '#000000',
+    '#FFFFFF',
+    '#FF0000',
+    '#00FF00',
+    '#0000FF',
+    '#FFFF00',
+    '#FF00FF',
+    '#00FFFF',
+  ];
+  selectedColor = signal('#000000');
 
   constructor() {
     for (let index = 0; index < this.gridSize; index++) {
@@ -22,7 +34,10 @@ export class PixelGrid {
     }
   }
   onPixelClick(rowIndex: number, colIndex: number) {
-    const newColor = this.grid[rowIndex][colIndex] === '#FFFFFF' ? '#000000' : '#FFFFFF';
-    this.grid[rowIndex][colIndex] = newColor;
+    this.grid[rowIndex][colIndex] = this.selectedColor();
+  }
+
+  selectColor(color: string) {
+    this.selectedColor.set(color);
   }
 }

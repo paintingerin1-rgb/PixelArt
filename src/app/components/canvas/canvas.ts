@@ -1,7 +1,9 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth';
+import { CanvasService } from '../../services/canvas';
 import { Router } from '@angular/router';
 import { PixelGrid } from '../pixel-grid/pixel-grid';
+import { signal } from '@angular/core';
 
 @Component({
   selector: 'app-canvas',
@@ -9,13 +11,23 @@ import { PixelGrid } from '../pixel-grid/pixel-grid';
   templateUrl: './canvas.html',
   styleUrl: './canvas.css',
 })
-export class Canvas {
+export class Canvas implements OnInit {
   errorMessage = signal('');
 
   constructor(
     public authService: AuthService,
+    private canvasService: CanvasService,
     private router: Router,
   ) {}
+
+  async ngOnInit() {
+    try {
+      const canvas = await this.canvasService.getOrCreateCanvas();
+      console.log('canvas:', canvas);
+    } catch (err) {
+      console.log('error getting canvas:', err);
+    }
+  }
 
   async logOut() {
     this.errorMessage.set('');

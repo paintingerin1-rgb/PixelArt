@@ -15,3 +15,23 @@
   border: 1px solid #ddd;
   cursor: pointer;
 }
+
+.palette {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+  justify-content: center;
+}
+
+.swatch {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.swatch.selected {
+  border: 3px solid #1a1a1a;
+  transform: scale(1);
+}
