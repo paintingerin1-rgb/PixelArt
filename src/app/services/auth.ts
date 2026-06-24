@@ -8,17 +8,23 @@ import { SupabaseService } from './supabase';
 export class AuthService {
   private sessionSubject = signal<Session | null>(null);
   public session = this.sessionSubject.asReadonly();
+  private initialSessionCheck: Promise<void>;
 
   constructor(private supabaseService: SupabaseService) {
     const client = this.supabaseService.getClient();
 
-    client.auth.getSession().then(({ data }) => {
+    this.initialSessionCheck = client.auth.getSession().then(({ data }) => {
       this.sessionSubject.set(data.session);
     });
 
     client.auth.onAuthStateChange((event, session) => {
       this.sessionSubject.set(session);
     });
+  }
+
+  async waitForSession() {
+    await this.initialSessionCheck;
+    return this.currentUser;
   }
 
   async signUp(email: string, password: string) {
