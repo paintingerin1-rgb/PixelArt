@@ -37,10 +37,14 @@ export class Register {
   async onSubmit(event: Event) {
     event.preventDefault();
 
+    if (this.registerForm().invalid()) {
+      return;
+    }
+
     this.isLoading.set(true);
     this.errorMessage.set('');
     try {
-      const credentials = this.registerModel();
+      const credentials = this.registerForm().value();
       const { error } = await this.authService.signUp(credentials.email, credentials.password);
       if (error) {
         this.errorMessage.set(error.message);

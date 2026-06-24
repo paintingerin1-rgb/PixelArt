@@ -38,10 +38,14 @@ export class Login {
   async onSubmit(event: Event) {
     event.preventDefault();
 
+    if (this.loginForm().invalid()) {
+      return;
+    }
+
     this.isLoading.set(true);
     this.errorMessage.set('');
     try {
-      const credentials = this.loginModel();
+      const credentials = this.loginForm().value();
       const { error } = await this.authService.signIn(credentials.email, credentials.password);
       if (error) {
         this.errorMessage.set(error.message);

@@ -12,7 +12,7 @@
       <p class="error">{{ registerForm.password().errors()[0].message }}</p>
     }
 
-    <button type="submit">Register</button>
+    <button type="submit" [disabled]="isLoading() || registerForm().invalid()">Register</button>
   </form>
 
   <p class="error">{{ errorMessage() }}</p>
