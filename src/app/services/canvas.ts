@@ -33,15 +33,9 @@ export class CanvasService {
     }
 
     if (existingCanvas) {
-      return existingCanvas;
-    }
-
-    if (existingCanvas) {
       console.log('found existing canvas:', existingCanvas.id);
       return existingCanvas;
     }
-
-    console.log('no existing canvas, creating new one');
 
     // no canvas exists therefore create one
     const { data: newCanvas, error: insertError } = await client
