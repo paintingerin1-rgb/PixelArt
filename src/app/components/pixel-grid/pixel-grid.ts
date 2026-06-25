@@ -14,14 +14,14 @@ export class PixelGrid implements OnInit {
   grid = signal<string[][]>([]);
 
   palette: string[] = [
-    '#000000', //black
+    '#4A3B5C', //black
     '#FFFFFF', //white
-    '#FF0000', //red
-    '#00FF00', //green
-    '#0000FF', //blue
-    '#FFFF00', //yellow
-    '#FF00FF', //pink
-    '#00FFFF', //cyan
+    '#FF8FC2', //red
+    '#7FE0B5', //green
+    '#7FB8E8', //blue
+    '#FFE066', //yellow
+    '#C896F7', //pink
+    '#FFAD6B', //cyan
   ];
   selectedColor = signal('#000000');
 
