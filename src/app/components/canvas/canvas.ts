@@ -3,6 +3,7 @@ import { AuthService } from '../../services/auth';
 import { CanvasService } from '../../services/canvas';
 import { Router } from '@angular/router';
 import { PixelGrid } from '../pixel-grid/pixel-grid';
+import { CanvasRecord } from '../../models/canvas-record';
 
 @Component({
   selector: 'app-canvas',
@@ -12,7 +13,7 @@ import { PixelGrid } from '../pixel-grid/pixel-grid';
 })
 export class Canvas implements OnInit {
   errorMessage = signal('');
-  canvasState = signal<any>(null);
+  canvasState = signal<CanvasRecord | null>(null);
 
   constructor(
     public authService: AuthService,
@@ -24,8 +25,9 @@ export class Canvas implements OnInit {
     try {
       const canvas = await this.canvasService.getOrCreateCanvas();
       this.canvasState.set(canvas);
-    } catch (err) {
-      console.log('error getting canvas:', err);
+    } catch (error) {
+      console.error(error);
+      this.errorMessage.set('unable to load your canvas. Please try again later.');
     }
   }
 

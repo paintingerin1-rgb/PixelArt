@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase';
 import { AuthService } from './auth';
-import { form } from '@angular/forms/signals';
-import { Canvas } from '../components/canvas/canvas';
+import { CanvasRecord } from '../models/canvas-record';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +12,7 @@ export class CanvasService {
     private authService: AuthService,
   ) {}
 
-  async getOrCreateCanvas() {
+  async getOrCreateCanvas(): Promise<CanvasRecord> {
     const client = this.supabaseService.getClient();
     const userId = this.authService.currentUser?.id;
 
@@ -76,7 +75,7 @@ export class CanvasService {
     );
 
     if (error) {
-      throw error;
+      throw new Error('failed to save current changes');
     }
   }
 
@@ -86,7 +85,7 @@ export class CanvasService {
     const { data, error } = await client.from('pixels').select('*').eq('canvas_id', canvasId);
 
     if (error) {
-      throw error;
+      throw new Error('failed to load canvas pixels');
     }
 
     return data;

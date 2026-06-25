@@ -1,5 +1,6 @@
-import { Component, Input, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CanvasService } from '../../services/canvas';
+import { input } from '@angular/core';
 
 @Component({
   selector: 'app-pixel-grid',
@@ -8,19 +9,19 @@ import { CanvasService } from '../../services/canvas';
   styleUrl: './pixel-grid.css',
 })
 export class PixelGrid implements OnInit {
-  @Input() canvasId!: string;
-
-  gridSize: number = 16;
+  canvasId = input.required<string>();
+  gridSize = input.required<number>();
   grid = signal<string[][]>([]);
+
   palette: string[] = [
-    '#000000',
-    '#FFFFFF',
-    '#FF0000',
-    '#00FF00',
-    '#0000FF',
-    '#FFFF00',
-    '#FF00FF',
-    '#00FFFF',
+    '#000000', //black
+    '#FFFFFF', //white
+    '#FF0000', //red
+    '#00FF00', //green
+    '#0000FF', //blue
+    '#FFFF00', //yellow
+    '#FF00FF', //pink
+    '#00FFFF', //cyan
   ];
   selectedColor = signal('#000000');
 
@@ -28,9 +29,9 @@ export class PixelGrid implements OnInit {
 
   ngOnInit() {
     const initialGrid: string[][] = [];
-    for (let i = 0; i < this.gridSize; i++) {
+    for (let i = 0; i < this.gridSize(); i++) {
       const row: string[] = [];
-      for (let j = 0; j < this.gridSize; j++) {
+      for (let j = 0; j < this.gridSize(); j++) {
         row.push('#FFFFFF');
       }
       initialGrid.push(row);
@@ -41,12 +42,18 @@ export class PixelGrid implements OnInit {
   }
 
   async loadExistingPixels() {
-    const pixels = await this.canvasService.loadPixels(this.canvasId);
-    const currentGrid = this.grid();
-    for (const pixel of pixels) {
-      currentGrid[pixel.y][pixel.x] = pixel.colour;
+    const pixels = await this.canvasService.loadPixels(this.canvasId());
+
+    const freshGrid: string[][] = [];
+    for (let i = 0; i < this.gridSize(); i++) {
+      freshGrid.push(new Array(this.gridSize()).fill('#FFFFFF'));
     }
-    this.grid.set([...currentGrid]);
+
+    for (const pixel of pixels) {
+      freshGrid[pixel.y][pixel.x] = pixel.colour;
+    }
+
+    this.grid.set(freshGrid);
   }
 
   async onPixelClick(rowIndex: number, colIndex: number) {
@@ -55,7 +62,7 @@ export class PixelGrid implements OnInit {
     currentGrid[rowIndex][colIndex] = colour;
     this.grid.set([...currentGrid]);
 
-    await this.canvasService.savePixel(this.canvasId, colIndex, rowIndex, colour);
+    await this.canvasService.savePixel(this.canvasId(), colIndex, rowIndex, colour);
   }
 
   selectColor(color: string) {
