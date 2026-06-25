@@ -1,20 +1,24 @@
 <div class="palette">
-  <div
-    class="swatch"
-    *ngFor="let color of palette"
-    [style.background-color]="color"
-    [class.selected]="color === selectedColor()"
-    (click)="selectColor(color)"
-  ></div>
+  @for (color of palette; track color) {
+    <div
+      class="swatch"
+      [style.background-color]="color"
+      [class.selected]="color === selectedColor()"
+      (click)="selectColor(color)"
+    ></div>
+  }
 </div>
 
 <div class="grid">
-  <div class="row" *ngFor="let row of grid; let rowIndex = index">
-    <div
-      class="pixel"
-      *ngFor="let cell of row; let colIndex = index"
-      [style.background-color]="cell"
-      (click)="onPixelClick(rowIndex, colIndex)"
-    ></div>
-  </div>
+  @for (row of grid(); track $index; let rowIndex = $index) {
+    <div class="row">
+      @for (cell of row; track $index; let colIndex = $index) {
+        <div
+          class="pixel"
+          [style.background-color]="cell"
+          (click)="onPixelClick(rowIndex, colIndex)"
+        ></div>
+      }
+    </div>
+  }
 </div>

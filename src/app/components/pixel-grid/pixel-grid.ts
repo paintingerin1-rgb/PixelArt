@@ -1,17 +1,17 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { signal } from '@angular/core';
+import { Component, Input, OnInit, signal } from '@angular/core';
+import { CanvasService } from '../../services/canvas';
 
 @Component({
   selector: 'app-pixel-grid',
-  imports: [FormsModule, CommonModule],
+  imports: [],
   templateUrl: './pixel-grid.html',
   styleUrl: './pixel-grid.css',
 })
-export class PixelGrid {
+export class PixelGrid implements OnInit {
+  @Input() canvasId!: string;
+
   gridSize: number = 16;
-  grid: string[][] = [];
+  grid = signal<string[][]>([]);
   palette: string[] = [
     '#000000',
     '#FFFFFF',
@@ -24,17 +24,38 @@ export class PixelGrid {
   ];
   selectedColor = signal('#000000');
 
-  constructor() {
-    for (let index = 0; index < this.gridSize; index++) {
+  constructor(private canvasService: CanvasService) {}
+
+  ngOnInit() {
+    const initialGrid: string[][] = [];
+    for (let i = 0; i < this.gridSize; i++) {
       const row: string[] = [];
       for (let j = 0; j < this.gridSize; j++) {
         row.push('#FFFFFF');
       }
-      this.grid.push(row);
+      initialGrid.push(row);
     }
+    this.grid.set(initialGrid);
+
+    this.loadExistingPixels();
   }
-  onPixelClick(rowIndex: number, colIndex: number) {
-    this.grid[rowIndex][colIndex] = this.selectedColor();
+
+  async loadExistingPixels() {
+    const pixels = await this.canvasService.loadPixels(this.canvasId);
+    const currentGrid = this.grid();
+    for (const pixel of pixels) {
+      currentGrid[pixel.y][pixel.x] = pixel.colour;
+    }
+    this.grid.set([...currentGrid]);
+  }
+
+  async onPixelClick(rowIndex: number, colIndex: number) {
+    const colour = this.selectedColor();
+    const currentGrid = this.grid();
+    currentGrid[rowIndex][colIndex] = colour;
+    this.grid.set([...currentGrid]);
+
+    await this.canvasService.savePixel(this.canvasId, colIndex, rowIndex, colour);
   }
 
   selectColor(color: string) {

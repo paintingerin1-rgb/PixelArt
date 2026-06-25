@@ -4,5 +4,7 @@
   <button (click)="logOut()">Log Out</button>
   <p class="error">{{ errorMessage() }}</p>
 
-  <app-pixel-grid> </app-pixel-grid>
+  @if (canvasState()) {
+    <app-pixel-grid [canvasId]="canvasState().id" />
+  }
 </div>
