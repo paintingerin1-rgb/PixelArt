@@ -1,10 +1,18 @@
 <div class="login-container">
   <h1>Login</h1>
 
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <input type="email" formControlName="email" placeholder="Email" />
-    <input type="password" formControlName="password" placeholder="Password" />
-    <button type="submit">Login</button>
+  <form (submit)="onSubmit($event)">
+    <input type="email" [formField]="loginForm.email" placeholder="Email" />
+    @if (loginForm.email().touched() && loginForm.email().invalid()) {
+      <p class="error">{{ loginForm.email().errors()[0].message }}</p>
+    }
+
+    <input type="password" [formField]="loginForm.password" placeholder="Password" />
+    @if (loginForm.password().touched() && loginForm.password().invalid()) {
+      <p class="error">{{ loginForm.password().errors()[0].message }}</p>
+    }
+
+    <button type="submit" [disabled]="isLoading() || loginForm().invalid()">Login</button>
   </form>
 
   <a routerLink="/register">Don't have an account? Register</a>
