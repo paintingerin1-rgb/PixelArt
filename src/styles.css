@@ -1,1 +1,32 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --bg: #f3effa;
+  --pink: #ffb8d9;
+  --mint: #b8f2d9;
+  --yellow: #fff3b8;
+  --plum: #4a3b5c;
+  --white: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(rgba(74, 59, 92, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(74, 59, 92, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: var(--plum);
+  font-family: 'Quicksand', sans-serif;
+  margin: 0;
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Press Start 2P', cursive;
+  font-weight: normal;
+  letter-spacing: 1px;
+}

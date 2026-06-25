@@ -1,35 +1,70 @@
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background-color: var(--white);
+  border-bottom: 4px solid var(--plum);
+}
+
+.logo {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 16px;
+  color: var(--plum);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 14px;
+}
+
+.user-info button {
+  padding: 6px 14px;
+  font-size: 12px;
+  box-shadow: 2px 2px 0 var(--plum);
+}
+
 .canvas-container {
-  max-width: 500px;
-  margin: 60px auto;
+  max-width: 600px;
+  margin: 40px auto;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  font-family: system-ui, sans-serif;
+  align-items: center;
+  gap: 16px;
   text-align: center;
 }
 
-button {
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  background-color: #1a1a1a;
-  color: white;
-  cursor: pointer;
+.user-email {
   font-size: 14px;
-  width: fit-content;
-  margin: 0 auto;
+  color: var(--plum);
+  opacity: 0.7;
+}
+
+button {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  padding: 10px 20px;
+  border: 3px solid var(--plum);
+  border-radius: 0;
+  background-color: var(--mint);
+  color: var(--plum);
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--plum);
+  transition: transform 0.1s;
 }
 
 button:hover {
-  background-color: #333;
+  background-color: var(--pink);
+}
+
+button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--plum);
 }
 
 .error {
-  color: #d33;
+  color: #c2185b;
   font-size: 13px;
-}
-
-.user-email {
-  color: #1a7a4c;
-  font-size: 14px;
 }
