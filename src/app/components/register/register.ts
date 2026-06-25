@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { form, FormField, required, email } from '@angular/forms/signals';
 import { AuthService } from '../../services/auth';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 interface RegisterData {
   email: string;
@@ -10,7 +10,7 @@ interface RegisterData {
 
 @Component({
   selector: 'app-register',
-  imports: [FormField],
+  imports: [FormField, RouterLink],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
