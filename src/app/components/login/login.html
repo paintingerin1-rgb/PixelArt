@@ -12,7 +12,7 @@
       <p class="error">{{ loginForm.password().errors()[0].message }}</p>
     }
 
-    <button type="submit">Login</button>
+    <button type="submit" [disabled]="isLoading() || loginForm().invalid()">Login</button>
   </form>
 
   <a routerLink="/register">Don't have an account? Register</a>

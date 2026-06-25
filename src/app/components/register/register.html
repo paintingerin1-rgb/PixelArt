@@ -1,5 +1,6 @@
 <div class="register-container">
   <h1>Register</h1>
+  <button type="button" routerLink="/login">Login Page</button>
 
   <form (submit)="onSubmit($event)">
     <input type="email" [formField]="registerForm.email" placeholder="Email" />
