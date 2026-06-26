@@ -16,12 +16,12 @@ export class PixelGrid implements OnInit {
   palette: string[] = [
     '#4A3B5C', //black
     '#FFFFFF', //white
-    '#FF8FC2', //red
+    '#FF8FC2', //pink
     '#7FE0B5', //green
     '#7FB8E8', //blue
     '#FFE066', //yellow
-    '#C896F7', //pink
-    '#FFAD6B', //cyan
+    '#C896F7', //purple
+    '#FFAD6B', //orange
   ];
   selectedColor = signal('#000000');
 
