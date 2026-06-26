@@ -9,4 +9,5 @@ export const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'register', component: Register },
   { path: 'canvas', component: Canvas, canActivate: [authGuard] },
+  { path: 'canvas/:id', component: Canvas },
 ];
