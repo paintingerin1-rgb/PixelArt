@@ -52,20 +52,7 @@ export class CanvasService {
     }
 
     return newCanvas;
-  } 
-
-  // get public canvas
-  async getOrCreateCanvas(): Promise<CanvasRecord> {
-    const client = this.supabaseService.getClient();
-
-    const userId = this.authService.currentUser?.id;
-
-    //if user is logged in t
-     if (userId)
-
   }
-
-
 
   //insert or update a row in pixels
   async savePixel(canvasId: string, x: number, y: number, colour: string) {

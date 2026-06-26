@@ -1,10 +1,9 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { AuthService } from '../../services/auth';
 import { CanvasService } from '../../services/canvas';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { PixelGrid } from '../pixel-grid/pixel-grid';
 import { CanvasRecord } from '../../models/canvas-record';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-canvas',
@@ -20,30 +19,15 @@ export class Canvas implements OnInit {
     public authService: AuthService,
     private canvasService: CanvasService,
     private router: Router,
-    private route: ActivatedRoute,
   ) {}
 
   async ngOnInit() {
-    const canvasId = this.route.snapshot.paramMap.get('id');
-
-    if (canvasId) {
-      //is canvas public otherwise reroute/ viewing someones canvas
-      try {
-        const canvas = await this.canvasService.getCanvasById(canvasId);
-        this.canvasState.set(canvas);
-      } catch (error) {
-        console.error(error);
-        this.errorMessage.set('This canvas is private or does not exist.');
-      }
-    } else {
-      //own canvas
-      try {
-        const canvas = await this.canvasService.getOrCreateCanvas();
-        this.canvasState.set(canvas);
-      } catch (error) {
-        console.error(error);
-        this.errorMessage.set('unable to load your canvas. Please try again later.');
-      }
+    try {
+      const canvas = await this.canvasService.getOrCreateCanvas();
+      this.canvasState.set(canvas);
+    } catch (error) {
+      console.error(error);
+      this.errorMessage.set('unable to load your canvas. Please try again later.');
     }
   }
 
