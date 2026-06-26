@@ -2,9 +2,10 @@
   @for (color of palette; track color) {
     <div
       class="swatch"
-      [style.background-color]="color"
-      [class.selected]="color === selectedColor()"
-      (click)="selectColor(color)"
+      [style.background-color]="color.hex"
+      [class.selected]="color.hex === selectedColor()"
+      (click)="selectColor(color.hex)"
+      [title]="color.name"
     ></div>
   }
 </div>
