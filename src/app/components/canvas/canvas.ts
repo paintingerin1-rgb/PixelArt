@@ -1,13 +1,14 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { AuthService } from '../../services/auth';
 import { CanvasService } from '../../services/canvas';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { PixelGrid } from '../pixel-grid/pixel-grid';
 import { CanvasRecord } from '../../models/canvas-record';
+import { ShareCanvas } from '../share-canvas/share-canvas';
 
 @Component({
   selector: 'app-canvas',
-  imports: [PixelGrid],
+  imports: [PixelGrid, ShareCanvas],
   templateUrl: './canvas.html',
   styleUrl: './canvas.css',
 })
@@ -19,15 +20,28 @@ export class Canvas implements OnInit {
     public authService: AuthService,
     private canvasService: CanvasService,
     private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   async ngOnInit() {
-    try {
-      const canvas = await this.canvasService.getOrCreateCanvas();
-      this.canvasState.set(canvas);
-    } catch (error) {
-      console.error(error);
-      this.errorMessage.set('unable to load your canvas. Please try again later.');
+    const canvasId = this.route.snapshot.paramMap.get('id');
+
+    if (canvasId) {
+      try {
+        const canvas = await this.canvasService.getCanvasById(canvasId);
+        this.canvasState.set(canvas);
+      } catch (error) {
+        console.error(error);
+        this.errorMessage.set('This canvas is private or does not exist.');
+      }
+    } else {
+      try {
+        const canvas = await this.canvasService.getOrCreateCanvas();
+        this.canvasState.set(canvas);
+      } catch (error) {
+        console.error(error);
+        this.errorMessage.set('Unable to load your canvas. Please try again later.');
+      }
     }
   }
 
@@ -43,5 +57,11 @@ export class Canvas implements OnInit {
     } catch (error) {
       this.errorMessage.set('An unexpected error occurred. Please try again.');
     }
+  }
+
+  get canEdit() {
+    const canvas = this.canvasState();
+    if (!canvas) return false;
+    return canvas.owner_id === this.authService.currentUser?.id;
   }
 }

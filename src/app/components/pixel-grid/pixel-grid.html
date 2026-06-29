@@ -10,6 +10,14 @@
   }
 </div>
 
+@if (canvasState()) {
+  <app-pixel-grid
+    [canvasId]="canvasState()!.id"
+    [gridSize]="canvasState()!.size"
+    [canEdit]="canEdit"
+  />
+}
+
 <div class="grid">
   @for (row of grid(); track $index; let rowIndex = $index) {
     <div class="row">
