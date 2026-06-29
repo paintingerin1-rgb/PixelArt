@@ -1,0 +1,16 @@
+<div class="share-canvas">
+  <h3>Share this canvas</h3>
+
+  <div class="share-link">
+    <input type="text" [value]="shareableUrl" readonly />
+    <button (click)="copyLink()">Copy</button>
+  </div>
+
+  <input
+    type="text"
+    [value]="searchQuery()"
+    (input)="searchQuery.set($event.target.value); onSearch()"
+    placeholder="Search by email"
+  />
+  ...
+</div>

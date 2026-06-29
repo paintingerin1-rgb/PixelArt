@@ -90,4 +90,34 @@ export class CanvasService {
 
     return data;
   }
+
+  async searchUsersByEmail(query: string) {
+    const client = this.supabaseService.getClient();
+
+    const { data, error } = await client
+      .from('profiles')
+      .select('id, email')
+      .ilike('email', `%${query}%`)
+      .limit(10);
+
+    if (error) {
+      throw error;
+    }
+
+    return data;
+  }
+
+  async addViewer(canvasId: string, userId: string) {
+    const client = this.supabaseService.getClient();
+
+    const { error } = await client.from('canvas_viewers').insert({
+      canvas_id: canvasId,
+      user_id: userId,
+      can_edit: false,
+    });
+
+    if (error) {
+      throw error;
+    }
+  }
 }

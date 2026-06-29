@@ -13,17 +13,18 @@ export class PixelGrid implements OnInit {
   gridSize = input.required<number>();
   grid = signal<string[][]>([]);
 
-  palette: string[] = [
-    '#4A3B5C', //black
-    '#FFFFFF', //white
-    '#FF8FC2', //pink
-    '#7FE0B5', //green
-    '#7FB8E8', //blue
-    '#FFE066', //yellow
-    '#C896F7', //purple
-    '#FFAD6B', //orange
+  palette = [
+    { name: 'black', hex: '#4A3B5C' },
+    { name: 'white', hex: '#FFFFFF' },
+    { name: 'pink', hex: '#FF8FC2' },
+    { name: 'green', hex: '#7FE0B5' },
+    { name: 'blue', hex: '#7FB8E8' },
+    { name: 'yellow', hex: '#FFE066' },
+    { name: 'purple', hex: '#C896F7' },
+    { name: 'orange', hex: '#FFAD6B' },
   ];
-  selectedColor = signal('#000000');
+
+  selectedColor = signal('#4A3B5C');
 
   constructor(private canvasService: CanvasService) {}
 
