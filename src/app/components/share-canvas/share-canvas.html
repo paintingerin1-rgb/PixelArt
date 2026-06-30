@@ -6,11 +6,48 @@
     <button (click)="copyLink()">Copy</button>
   </div>
 
-  <input
-    type="text"
-    [value]="searchQuery()"
-    (input)="searchQuery.set($event.target.value); onSearch()"
-    placeholder="Search by email"
-  />
-  ...
+  <div class="search-wrapper">
+    <div class="search-input">
+      <input
+        type="text"
+        [value]="searchQuery()"
+        (input)="searchQuery.set($any($event.target).value); onSearch()"
+        placeholder="Search by email to add a viewer"
+      />
+
+      @if (searchQuery()) {
+        <button class="clear-btn" (click)="clearSearch()">✕</button>
+      }
+    </div>
+
+    @if (results().length > 0) {
+      <div class="dropdown">
+        @for (user of results(); track user.id) {
+          <div class="dropdown-item">
+            <span>{{ user.email }}</span>
+            <button
+              (click)="addAsViewer(user.id, user.email)"
+              [disabled]="addedEmails().includes(user.email) || pending().includes(user.id)"
+            >
+              @if (pending().includes(user.id)) {
+                ...
+              } @else {
+                Add
+              }
+            </button>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <p class="error">{{ errorMessage() }}</p>
+
+  @if (addedEmails().length > 0) {
+    <div class="added-list">
+      @for (email of addedEmails(); track email) {
+        <span class="added-chip">{{ email }}</span>
+      }
+    </div>
+  }
 </div>

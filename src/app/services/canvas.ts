@@ -54,6 +54,22 @@ export class CanvasService {
     return newCanvas;
   }
 
+  async getCanvasById(canvasId: string): Promise<CanvasRecord> {
+    const client = this.supabaseService.getClient();
+
+    const { data, error } = await client
+      .from('canvases')
+      .select('*')
+      .eq('id', canvasId)
+      .maybeSingle();
+
+    if (error || !data) {
+      throw error || new Error('Canvas not found');
+    }
+
+    return data;
+  }
+
   //insert or update a row in pixels
   async savePixel(canvasId: string, x: number, y: number, colour: string) {
     const client = this.supabaseService.getClient();
@@ -110,11 +126,32 @@ export class CanvasService {
   async addViewer(canvasId: string, userId: string) {
     const client = this.supabaseService.getClient();
 
-    const { error } = await client.from('canvas_viewers').insert({
-      canvas_id: canvasId,
-      user_id: userId,
-      can_edit: false,
-    });
+    const { data: sessionCheck } = await client.auth.getSession();
+    console.log('session inside addViewer:', sessionCheck);
+
+    const { error } = await client.from('canvas_viewers').upsert(
+      {
+        canvas_id: canvasId,
+        user_id: userId,
+        can_edit: false,
+      },
+      { onConflict: 'canvas_id,user_id' },
+    );
+
+    if (error) {
+      console.log('upsert error:', error);
+      throw error;
+    }
+  }
+
+  async setCanEdit(canvasId: string, userId: string, canEdit: boolean) {
+    const client = this.supabaseService.getClient();
+
+    const { error } = await client
+      .from('canvas_viewers')
+      .update({ can_edit: canEdit })
+      .eq('canvas_id', canvasId)
+      .eq('user_id', userId);
 
     if (error) {
       throw error;

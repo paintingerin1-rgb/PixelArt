@@ -8,9 +8,10 @@ import { ShareCanvas } from '../share-canvas/share-canvas';
 
 @Component({
   selector: 'app-canvas',
+  standalone: true,
   imports: [PixelGrid, ShareCanvas],
   templateUrl: './canvas.html',
-  styleUrl: './canvas.css',
+  styleUrls: ['./canvas.css'],
 })
 export class Canvas implements OnInit {
   errorMessage = signal('');
