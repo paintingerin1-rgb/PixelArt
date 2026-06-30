@@ -63,8 +63,6 @@ export class CanvasService {
       .eq('id', canvasId)
       .maybeSingle();
 
-    console.log('getCanvasById result:', { data, error, canvasId });
-
     if (error || !data) {
       throw error || new Error('Canvas not found');
     }
@@ -142,6 +140,20 @@ export class CanvasService {
 
     if (error) {
       console.log('upsert error:', error);
+      throw error;
+    }
+  }
+
+  async setCanEdit(canvasId: string, userId: string, canEdit: boolean) {
+    const client = this.supabaseService.getClient();
+
+    const { error } = await client
+      .from('canvas_viewers')
+      .update({ can_edit: canEdit })
+      .eq('canvas_id', canvasId)
+      .eq('user_id', userId);
+
+    if (error) {
       throw error;
     }
   }

@@ -1,6 +1,7 @@
 import { Component, input, signal } from '@angular/core';
 import { CanvasService } from '../../services/canvas';
 import { AuthService } from '../../services/auth';
+import { createClient } from '@supabase/supabase-js';
 
 @Component({
   selector: 'app-share-canvas',
@@ -43,7 +44,6 @@ export class ShareCanvas {
   async addAsViewer(userId: string, email: string) {
     const currentUser = await this.authService.waitForSession();
 
-    console.log('current user attempting to add viewer:', currentUser);
     if (!currentUser) {
       this.errorMessage.set('You must be signed in to add viewers.');
       return;
@@ -76,5 +76,10 @@ export class ShareCanvas {
 
   async copyLink() {
     await navigator.clipboard.writeText(this.shareableUrl);
+  }
+
+  clearSearch() {
+    this.searchQuery.set('');
+    this.onSearch();
   }
 }

@@ -131,3 +131,44 @@ button:disabled {
   min-height: 16px;
   margin: 8px 0 0;
 }
+
+.search-wrapper {
+  position: relative;
+}
+
+.search-input {
+  position: relative;
+  width: 100%;
+}
+
+.search-input input {
+  width: 100%;
+  padding: 10px 34px 10px 10px;
+  border: 3px solid var(--plum);
+  font-family: 'Quicksand', sans-serif;
+  font-size: 14px;
+  background-color: var(--bg);
+  box-sizing: border-box;
+  transition: 0.15s ease;
+}
+
+.search-input input:focus {
+  outline: none;
+  border-color: var(--pink);
+  background-color: var(--white);
+}
+
+.clear-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--plum);
+  padding: 0;
+}
