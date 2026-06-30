@@ -1,58 +1,46 @@
 <div class="share-canvas">
   <h3>Share this canvas</h3>
 
-  <!-- Share link -->
   <div class="share-link">
     <input type="text" [value]="shareableUrl" readonly />
     <button (click)="copyLink()">Copy</button>
   </div>
 
-  <!-- Search input -->
-  <input
-    type="text"
-    [value]="searchQuery()"
-    (input)="searchQuery.set($any($event.target).value); onSearch()"
-    placeholder="Search by email"
-  />
+  <div class="search-wrapper">
+    <input
+      type="text"
+      [value]="searchQuery()"
+      (input)="searchQuery.set($any($event.target).value); onSearch()"
+      placeholder="Search by email to add a viewer"
+    />
 
-  <!-- Error message -->
-  <p class="error" *ngIf="errorMessage()">
-    {{ errorMessage() }}
-  </p>
+    @if (results().length > 0) {
+      <div class="dropdown">
+        @for (user of results(); track user.id) {
+          <div class="dropdown-item">
+            <span>{{ user.email }}</span>
+            <button
+              (click)="addAsViewer(user.id, user.email)"
+              [disabled]="addedEmails().includes(user.email) || pending().includes(user.id)"
+            >
+              @if (pending().includes(user.id)) {
+                ...
+              } @else {
+                Add
+              }
+            </button>
+          </div>
+        }
+      </div>
+    }
+  </div>
 
-  <!-- Search results -->
-  @if (results().length > 0) {
-    <div class="results">
-      <h4>Users</h4>
+  <p class="error">{{ errorMessage() }}</p>
 
-      @for (user of results(); track user.id) {
-        <div class="result-item">
-          <span>{{ user.email }}</span>
-
-          <button
-            (click)="addAsViewer(user.id, user.email)"
-            [disabled]="addedEmails().includes(user.email) || pending().includes(user.id)"
-          >
-            @if (pending().includes(user.id)) {
-              Adding...
-            } @else {
-              Add
-            }
-          </button>
-        </div>
-      }
-    </div>
-  }
-
-  <!-- Already added users (optional but useful) -->
   @if (addedEmails().length > 0) {
-    <div class="added">
-      <h4>Added</h4>
-
+    <div class="added-list">
       @for (email of addedEmails(); track email) {
-        <div class="added-item">
-          {{ email }}
-        </div>
+        <span class="added-chip">{{ email }}</span>
       }
     </div>
   }

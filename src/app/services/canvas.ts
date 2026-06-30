@@ -145,22 +145,4 @@ export class CanvasService {
       throw error;
     }
   }
-
-  async debugAuthUid() {
-    const client = this.supabaseService.getClient();
-    const { data, error } = await client.rpc('debug_current_uid');
-    console.log('auth.uid() according to Postgres:', data, error);
-  }
-
-  async debugViewerCheck(canvasId: string) {
-    const client = this.supabaseService.getClient();
-    const { data, error } = await client.rpc('debug_viewer_check', { check_canvas_id: canvasId });
-    console.log('viewer check result:', data, error);
-  }
-
-  async debugViewerCheck2(canvasId: string) {
-    const client = this.supabaseService.getClient();
-    const { data, error } = await client.rpc('debug_viewer_check2', { check_canvas_id: canvasId });
-    console.log('viewer check 2 result:', data, error);
-  }
 }

@@ -26,10 +26,6 @@ export class Canvas implements OnInit {
 
   async ngOnInit() {
     const canvasId = this.route.snapshot.paramMap.get('id');
-    this.canvasService.debugAuthUid();
-    this.canvasService.debugViewerCheck('ff106eff-cc27-4704-a487-ad0dfd7a121c');
-
-    this.canvasService.debugViewerCheck2('ff106eff-cc27-4704-a487-ad0dfd7a121c');
 
     if (canvasId) {
       try {
