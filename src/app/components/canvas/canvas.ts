@@ -8,9 +8,10 @@ import { ShareCanvas } from '../share-canvas/share-canvas';
 
 @Component({
   selector: 'app-canvas',
+  standalone: true,
   imports: [PixelGrid, ShareCanvas],
   templateUrl: './canvas.html',
-  styleUrl: './canvas.css',
+  styleUrls: ['./canvas.css'],
 })
 export class Canvas implements OnInit {
   errorMessage = signal('');
@@ -25,6 +26,10 @@ export class Canvas implements OnInit {
 
   async ngOnInit() {
     const canvasId = this.route.snapshot.paramMap.get('id');
+    this.canvasService.debugAuthUid();
+    this.canvasService.debugViewerCheck('ff106eff-cc27-4704-a487-ad0dfd7a121c');
+
+    this.canvasService.debugViewerCheck2('ff106eff-cc27-4704-a487-ad0dfd7a121c');
 
     if (canvasId) {
       try {

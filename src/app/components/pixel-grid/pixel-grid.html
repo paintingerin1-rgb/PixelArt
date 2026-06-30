@@ -1,21 +1,15 @@
-<div class="palette">
-  @for (color of palette; track color) {
-    <div
-      class="swatch"
-      [style.background-color]="color.hex"
-      [class.selected]="color.hex === selectedColor()"
-      (click)="selectColor(color.hex)"
-      [title]="color.name"
-    ></div>
-  }
-</div>
-
-@if (canvasState()) {
-  <app-pixel-grid
-    [canvasId]="canvasState()!.id"
-    [gridSize]="canvasState()!.size"
-    [canEdit]="canEdit"
-  />
+@if (canEdit()) {
+  <div class="palette">
+    @for (color of palette; track color) {
+      <div
+        class="swatch"
+        [style.background-color]="color.hex"
+        [class.selected]="color.hex === selectedColor()"
+        (click)="selectColor(color.hex)"
+        [title]="color.name"
+      ></div>
+    }
+  </div>
 }
 
 <div class="grid">

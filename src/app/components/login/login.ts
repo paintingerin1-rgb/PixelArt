@@ -11,9 +11,10 @@ interface LoginData {
 
 @Component({
   selector: 'app-login',
+  standalone: true,
   imports: [RouterLink, FormField],
   templateUrl: './login.html',
-  styleUrl: './login.css',
+  styleUrls: ['./login.css'],
 })
 export class Login {
   errorMessage = signal('');

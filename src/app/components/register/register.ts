@@ -10,9 +10,10 @@ interface RegisterData {
 
 @Component({
   selector: 'app-register',
+  standalone: true,
   imports: [FormField, RouterLink],
   templateUrl: './register.html',
-  styleUrl: './register.css',
+  styleUrls: ['./register.css'],
 })
 export class Register {
   errorMessage = signal('');

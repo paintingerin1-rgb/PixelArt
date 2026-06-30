@@ -1,16 +1,17 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, input, signal } from '@angular/core';
 import { CanvasService } from '../../services/canvas';
-import { input } from '@angular/core';
 
 @Component({
   selector: 'app-pixel-grid',
+  standalone: true,
   imports: [],
   templateUrl: './pixel-grid.html',
-  styleUrl: './pixel-grid.css',
+  styleUrls: ['./pixel-grid.css'],
 })
 export class PixelGrid implements OnInit {
   canvasId = input.required<string>();
   gridSize = input.required<number>();
+  canEdit = input.required<boolean>();
   grid = signal<string[][]>([]);
 
   palette = [
@@ -58,6 +59,10 @@ export class PixelGrid implements OnInit {
   }
 
   async onPixelClick(rowIndex: number, colIndex: number) {
+    if (!this.canEdit()) {
+      return;
+    }
+
     const colour = this.selectedColor();
     const currentGrid = this.grid();
     currentGrid[rowIndex][colIndex] = colour;

@@ -14,8 +14,11 @@
     <app-share-canvas [canvasId]="canvasState()!.id" />
   }
 
-  <!-- canvas.html -->
   @if (canvasState()) {
-    <app-pixel-grid [canvasId]="canvasState()!.id" [gridSize]="canvasState()!.size" />
+    <app-pixel-grid
+      [canvasId]="canvasState()!.id"
+      [gridSize]="canvasState()!.size"
+      [canEdit]="canEdit"
+    />
   }
 </div>
