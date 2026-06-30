@@ -1,12 +1,11 @@
 import { Component, input, signal } from '@angular/core';
-import { NgIf } from '@angular/common';
 import { CanvasService } from '../../services/canvas';
 import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-share-canvas',
   standalone: true,
-  imports: [NgIf],
+  imports: [],
   templateUrl: './share-canvas.html',
   styleUrls: ['./share-canvas.css'],
 })
