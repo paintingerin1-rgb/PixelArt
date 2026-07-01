@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase';
 import { AuthService } from './auth';
 import { CanvasRecord } from '../models/canvas-record';
+import { CanvasViewer } from '../models/canvas-viewer';
 
 @Injectable({
   providedIn: 'root',
@@ -144,6 +145,22 @@ export class CanvasService {
     }
   }
 
+  async getViewers(canvasId: string): Promise<CanvasViewer[]> {
+    const client = this.supabaseService.getClient();
+
+    const { data, error } = await client
+      .from('canvas_viewers')
+      .select('user_id, can_edit, profiles(email)')
+      .eq('canvas_id', canvasId)
+      .returns<CanvasViewer[]>();
+
+    if (error) {
+      throw error;
+    }
+
+    return data ?? [];
+  }
+
   async setCanEdit(canvasId: string, userId: string, canEdit: boolean) {
     const client = this.supabaseService.getClient();
 
@@ -156,5 +173,19 @@ export class CanvasService {
     if (error) {
       throw error;
     }
+  }
+
+  async checkCanEdit(canvasId: string, userId: string | undefined): Promise<boolean> {
+    if (!userId) return false;
+    const client = this.supabaseService.getClient();
+
+    const { data } = await client
+      .from('canvas_viewers')
+      .select('can_edit')
+      .eq('canvas_id', canvasId)
+      .eq('user_id', userId)
+      .maybeSingle();
+
+    return data?.can_edit ?? false;
   }
 }

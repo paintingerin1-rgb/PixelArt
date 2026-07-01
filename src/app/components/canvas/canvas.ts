@@ -16,6 +16,7 @@ import { ShareCanvas } from '../share-canvas/share-canvas';
 export class Canvas implements OnInit {
   errorMessage = signal('');
   canvasState = signal<CanvasRecord | null>(null);
+  canEdit = signal(false);
 
   constructor(
     public authService: AuthService,
@@ -31,6 +32,7 @@ export class Canvas implements OnInit {
       try {
         const canvas = await this.canvasService.getCanvasById(canvasId);
         this.canvasState.set(canvas);
+        await this.updateCanEdit();
       } catch (error) {
         console.error(error);
         this.errorMessage.set('This canvas is private or does not exist.');
@@ -39,6 +41,7 @@ export class Canvas implements OnInit {
       try {
         const canvas = await this.canvasService.getOrCreateCanvas();
         this.canvasState.set(canvas);
+        await this.updateCanEdit();
       } catch (error) {
         console.error(error);
         this.errorMessage.set('Unable to load your canvas. Please try again later.');
@@ -60,9 +63,20 @@ export class Canvas implements OnInit {
     }
   }
 
-  get canEdit() {
+  async updateCanEdit() {
     const canvas = this.canvasState();
-    if (!canvas) return false;
-    return canvas.owner_id === this.authService.currentUser?.id;
+    if (!canvas) {
+      this.canEdit.set(false);
+      return;
+    }
+
+    const userId = this.authService.currentUser?.id;
+    if (canvas.owner_id === userId) {
+      this.canEdit.set(true);
+      return;
+    }
+
+    const canEdit = await this.canvasService.checkCanEdit(canvas.id, userId);
+    this.canEdit.set(canEdit);
   }
 }
