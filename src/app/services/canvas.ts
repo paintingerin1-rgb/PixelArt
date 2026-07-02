@@ -33,7 +33,6 @@ export class CanvasService {
     }
 
     if (existingCanvas) {
-      console.log('found existing canvas:', existingCanvas.id);
       return existingCanvas;
     }
 
@@ -128,7 +127,6 @@ export class CanvasService {
     const client = this.supabaseService.getClient();
 
     const { data: sessionCheck } = await client.auth.getSession();
-    console.log('session inside addViewer:', sessionCheck);
 
     const { error } = await client.from('canvas_viewers').upsert(
       {
@@ -140,7 +138,6 @@ export class CanvasService {
     );
 
     if (error) {
-      console.log('upsert error:', error);
       throw error;
     }
   }
