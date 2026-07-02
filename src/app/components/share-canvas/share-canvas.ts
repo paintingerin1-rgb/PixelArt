@@ -1,7 +1,7 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, input, OnInit, signal } from '@angular/core';
 import { CanvasService } from '../../services/canvas';
 import { AuthService } from '../../services/auth';
-import { createClient } from '@supabase/supabase-js';
+import { CanvasViewer } from '../../models/canvas-viewer';
 
 @Component({
   selector: 'app-share-canvas',
@@ -10,7 +10,7 @@ import { createClient } from '@supabase/supabase-js';
   templateUrl: './share-canvas.html',
   styleUrls: ['./share-canvas.css'],
 })
-export class ShareCanvas {
+export class ShareCanvas implements OnInit {
   canvasId = input.required<string>();
 
   searchQuery = signal('');
@@ -18,11 +18,16 @@ export class ShareCanvas {
   errorMessage = signal('');
   addedEmails = signal<string[]>([]);
   pending = signal<string[]>([]);
+  viewers = signal<CanvasViewer[]>([]);
 
   constructor(
     private canvasService: CanvasService,
     private authService: AuthService,
   ) {}
+
+  ngOnInit(): void {
+    this.loadViewers();
+  }
 
   async onSearch() {
     this.errorMessage.set('');
@@ -58,6 +63,7 @@ export class ShareCanvas {
     try {
       await this.canvasService.addViewer(this.canvasId(), userId);
       this.addedEmails.set([...this.addedEmails(), email]);
+      await this.loadViewers();
     } catch (err) {
       console.error('Failed to add viewer', err, {
         currentUserId: currentUser.id,
@@ -67,6 +73,24 @@ export class ShareCanvas {
       this.errorMessage.set('Could not add this user. Please confirm you are the canvas owner.');
     } finally {
       this.pending.set(this.pending().filter((id) => id !== userId));
+    }
+  }
+
+  async loadViewers() {
+    try {
+      const data = await this.canvasService.getViewers(this.canvasId());
+      this.viewers.set(data);
+    } catch (err) {
+      this.errorMessage.set('Could not load viewers.');
+    }
+  }
+
+  async toggleEdit(userId: string, currentValue: boolean) {
+    try {
+      await this.canvasService.setCanEdit(this.canvasId(), userId, !currentValue);
+      await this.loadViewers();
+    } catch (err) {
+      this.errorMessage.set('Could not update permission.');
     }
   }
 
