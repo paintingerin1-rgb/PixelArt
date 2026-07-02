@@ -1,1 +1,1 @@
-alter publication supabase_realtime add table pixels;
+alter publication supabase_realtime add table canvas_viewers;
