@@ -33,6 +33,7 @@ A collaborative pixel art canvas web app built with Angular and Supabase. Paint 
 
 Deployed on Cloudflare Pages:
 [https://717b70ac.pixelart-el7.pages.dev/login]
+Note: If you’re unable to log in, it may be because my Supabase database is currently paused due to financial constraints.
 
 ## Running locally
 
